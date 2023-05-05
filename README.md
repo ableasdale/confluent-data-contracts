@@ -78,3 +78,7 @@ Caused by: io.confluent.kafka.schemaregistry.rules.RuleException: Expr 'size(mes
 
 ## Further Reading
 
+- <https://docs.confluent.io/platform/current/schema-registry/fundamentals/data-contracts.html>
+- <https://github.com/google/cel-spec>
+- <https://docs.confluent.io/cloud/current/get-started/schema-registry.html#cloud-sr-config>
+- <https://docs.confluent.io/platform/current/schema-registry/fundamentals/data-contracts.html>
