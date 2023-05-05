@@ -37,10 +37,16 @@ curl --silent -X POST -H "Content-Type: application/vnd.schemaregistry.v1+json" 
                     "type": "CEL",
                     "mode": "WRITE",
                     "expr": "size(message.greet) == 4",
-                    "onFailure": "ERROR"
+                    "onFailure": "DLQ"
                   }
                 ]}}' \
     http://localhost:8081/subjects/message-value/versions
+```
+
+You should see an id returned on success:
+
+```bash
+{"id":1}%
 ```
 
 ## Run the application
@@ -68,9 +74,11 @@ Run the application with the following arguments:
 java -jar build/libs/kafka-producer-application-0.0.1.jar configuration/dev.properties input-fail.txt
 ```
 
-You should see the following failure scenario:
+You should see the following failure scenario (accompanied by the message going to a DLQ):
 
 ```bash
+14:22:51.798 INFO  io.confluent.kafka.schemaregistry.rules.DlqAction.lambda$run$0:76 - Sent message to dlq topic checkLenDLQ
+[...]
 Caused by: org.apache.kafka.common.errors.SerializationException: Rule failed: checkLen
 [...]
 Caused by: io.confluent.kafka.schemaregistry.rules.RuleException: Expr 'size(message.greet) == 4' failed
@@ -81,4 +89,3 @@ Caused by: io.confluent.kafka.schemaregistry.rules.RuleException: Expr 'size(mes
 - <https://docs.confluent.io/platform/current/schema-registry/fundamentals/data-contracts.html>
 - <https://github.com/google/cel-spec>
 - <https://docs.confluent.io/cloud/current/get-started/schema-registry.html#cloud-sr-config>
-- <https://docs.confluent.io/platform/current/schema-registry/fundamentals/data-contracts.html>

@@ -7,7 +7,7 @@
         </encoder>
     </appender>
     <logger name="io.confluent" level="info" />
-    <logger name="org.apache.kafka.common" level="error" />
+    <logger name="org.apache.kafka.common.config" level="error" />
     <root level="warn">
         <appender-ref ref="STDOUT" />
     </root>

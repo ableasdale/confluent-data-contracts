@@ -68,10 +68,10 @@ services:
   control-center:
     image: confluentinc/cp-enterprise-control-center:${TAG}
     hostname: control-center
-    container_name: control-center
-    restart: always
     depends_on:
       kafka:
+        condition: service_healthy
+      schema-registry:
         condition: service_healthy
     ports:
       - "9021:9021"
@@ -87,3 +87,7 @@ services:
       CONFLUENT_METRICS_TOPIC_REPLICATION: 1
       CONTROL_CENTER_REST_LISTENERS: "http://0.0.0.0:9021"
       CONTROL_CENTER_STREAMS_NUM_STREAM_THREADS: "5"
+    healthcheck:
+      interval: 10s
+      retries: 20
+      test: curl http://localhost:9021/ --output /dev/null || exit 1
