@@ -43,10 +43,37 @@ curl --silent -X POST -H "Content-Type: application/vnd.schemaregistry.v1+json" 
     http://localhost:8081/subjects/message-value/versions
 ```
 
-Run the application:
+## Run the application
+
+### Success Path
+
+Run the application with the following arguments:
 
 ```bash
 java -jar build/libs/kafka-producer-application-0.0.1.jar configuration/dev.properties input.txt
+```
+
+For the input.txt file, 2 records should be created:
+
+```bash
+12:24:14.502 INFO  i.confluent.developer.KafkaAvroProducerApplication.lambda$printMetadata$0:69 - Record written to offset 0 timestamp 1683285854087
+12:24:14.502 INFO  i.confluent.developer.KafkaAvroProducerApplication.lambda$printMetadata$0:69 - Record written to offset 1 timestamp 1683285854480
+```
+
+### Failure Path
+
+Run the application with the following arguments:
+
+```bash
+java -jar build/libs/kafka-producer-application-0.0.1.jar configuration/dev.properties input-fail.txt
+```
+
+You should see the following failure scenario:
+
+```bash
+Caused by: org.apache.kafka.common.errors.SerializationException: Rule failed: checkLen
+[...]
+Caused by: io.confluent.kafka.schemaregistry.rules.RuleException: Expr 'size(message.greet) == 4' failed
 ```
 
 ## Further Reading
