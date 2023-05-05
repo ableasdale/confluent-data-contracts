@@ -25,8 +25,8 @@ curl --silent -X POST -H "Content-Type: application/vnd.schemaregistry.v1+json" 
             "schema": "{\"type\":\"record\",\"namespace\":\"org.matias\",\"name\":\"Message\",\"fields\":[{\"name\":\"greet\",\"type\":\"string\"}]}",
             "metadata": {
                 "properties" : {
-                    "owner": "Matias Cascallares",
-                    "email": "mcascallaresfondevila@confluent.io"
+                    "owner": "Firstname Surname",
+                    "email": "emailaddress@example.com"
                 }
             },
             "ruleSet": {
