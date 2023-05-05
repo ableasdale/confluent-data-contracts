@@ -16,6 +16,18 @@ Build the project:
 gradle clean shadowJar
 ```
 
+## Wait for Schema Registry to startup
+
+```bash
+curl localhost:8081/schemas/types
+```
+
+When it's ready, you should see a list of supported schema types returned:
+
+```bash
+["JSON","PROTOBUF","AVRO"]
+```
+
 ## Register Schema and associated ruleSet
 
 ```bash
@@ -27,6 +39,9 @@ curl --silent -X POST -H "Content-Type: application/vnd.schemaregistry.v1+json" 
                 "properties" : {
                     "owner": "Firstname Surname",
                     "email": "emailaddress@example.com"
+                },
+                "tags": {
+                    "message.greet": [ "PII" ]
                 }
             },
             "ruleSet": {
@@ -48,6 +63,12 @@ You should see an id returned on success:
 ```bash
 {"id":1}%
 ```
+
+## Retrieving a specific schema
+
+````bash
+curl --silent -X GET http://localhost:8081/subjects/message-value/versions/1 | jq
+````
 
 ## Run the application
 
@@ -82,6 +103,20 @@ You should see the following failure scenario (accompanied by the message going 
 Caused by: org.apache.kafka.common.errors.SerializationException: Rule failed: checkLen
 [...]
 Caused by: io.confluent.kafka.schemaregistry.rules.RuleException: Expr 'size(message.greet) == 4' failed
+```
+
+### Consume
+
+Connect to the Schema Registry container:
+
+```bash
+docker exec -it confluent-data-contracts-schema-registry-1 bash
+```
+
+Use the Avro Console Consumer to read from the `message` topic:
+
+```bash
+kafka-avro-console-consumer --topic message --bootstrap-server kafka:9092 --property schema.registry.url=http://localhost:8081
 ```
 
 ## Further Reading
