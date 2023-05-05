@@ -1,0 +1,8 @@
+{
+  "type": "record",
+  "namespace": "org.matias",
+  "name": "Message",
+  "fields": [
+    {"name": "greet", "type": "string"}
+  ]
+}
